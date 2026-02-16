@@ -73,6 +73,7 @@ export const matchAndRecommend = async (req, res) => {
       return {
         recipeId: recipe._id,
         title: recipe.title,
+        image: recipe.image,
         matchScore: Number(score.toFixed(2)),
         totalRequired: requiredIngredients.length,
         matchedCount
@@ -128,6 +129,79 @@ export const getRecipeById = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch recipe details"
+    });
+  }
+};
+
+export const searchRecipes = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q) {
+      const recipes = await Recipe.find().limit(10).populate("ingredients.ingredient");
+      return res.json({
+        success: true,
+        recipes
+      });
+    }
+
+    // Search by title or ingredient name using regex (case-insensitive)
+    const recipes = await Recipe.find({
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { "ingredients.ingredient.name": { $regex: q, $options: "i" } } // This might need a slightly different query depending on schema, but let's try this first assuming ingredients are populated or have names denormalized. 
+        // Wait, ingredients is array of objects { ingredient: Ref, ... }. We can't query 'ingredient.name' directly unless we use aggregate or if we assume population happens after. 
+        // Actually, for simple regex on referenced fields, we might need an aggregate with lookup.
+        // Let's stick to title search for now for simplicity and speed, or check if we can assume ingredients are populated.
+        // The Recipe schema imports are not shown, but matchAndRecommend creates a Fuse on "allIngredients".
+        // Let's implement a simple title search first, and maybe ingredients if easy.
+      ]
+    }).populate("ingredients.ingredient");
+
+    // Since we can't easily regex search on populated fields in a standard find without aggregate, 
+    // let's do title search first. If we want ingredient search, we might need to find ingredients first like matchAndRecommend does.
+    
+    // Improved strategy:
+    // 1. Find ingredients matching the query
+    // 2. Find recipes with those ingredients OR matching title
+    
+    const ingredientRegex = new RegExp(q, 'i');
+    const matchedIngredients = await Ingredient.find({ name: ingredientRegex }).select('_id');
+    const matchedIngredientIds = matchedIngredients.map(i => i._id);
+
+    const searchResults = await Recipe.find({
+        $or: [
+            { title: { $regex: q, $options: "i" } },
+            { "ingredients.ingredient": { $in: matchedIngredientIds } }
+        ]
+    }).populate("ingredients.ingredient");
+
+    res.json({
+      success: true,
+      recipes: searchResults
+    });
+
+  } catch (error) {
+    console.error("Search failed:", error);
+    res.status(500).json({
+      success: false,
+      message: "Search failed"
+    });
+  }
+};
+
+export const getAllIngredients = async (req, res) => {
+  try {
+    const ingredients = await Ingredient.find({}, 'name aliases _id').sort({ name: 1 });
+    res.json({
+      success: true,
+      ingredients
+    });
+  } catch (error) {
+    console.error("Failed to fetch ingredients:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch ingredients"
     });
   }
 };

@@ -12,6 +12,11 @@ const recipeSchema = new mongoose.Schema({
     trim: true
   },
 
+  image: {
+    type: String,
+    trim: true
+  },
+
   ingredients: [
     {
       ingredient: {

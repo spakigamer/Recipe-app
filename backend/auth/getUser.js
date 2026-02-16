@@ -1,9 +1,9 @@
+
 import loginSchema from "../modules/login.js";
 
 export const getUser = async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const user = await loginSchema.findById(userId);
+    const user = await loginSchema.findById(req.user.userId).populate('cookedRecipes');
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -16,7 +16,8 @@ export const getUser = async (req, res) => {
         name: user.name,
         email: user.email,
         picture: user.picture,
-        googleId: user.googleId
+        googleId: user.googleId,
+        cookedRecipes: user.cookedRecipes
       },
     });
   } catch (error) {

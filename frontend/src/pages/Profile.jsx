@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Typography, Button, Spin, Layout } from 'antd';
-import { UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Card, Avatar, Typography, Button, Spin, Layout, Row, Col, Statistic, message } from 'antd';
+import { UserOutlined, ArrowLeftOutlined, HeartOutlined, FireOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ENDPOINTS } from '../utils/endpoints';
@@ -14,12 +14,6 @@ export const Profile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, you might fetch user details from an API using the token
-    // For now, we'll try to decode the token or fetch from a 'me' endpoint if it exists
-    // Or just mock it if we don't have the endpoint yet.
-    // Let's assume we have a /auth/me endpoint or similar, or just show a placeholder.
-    
-    // Fetch user data from API
     const fetchUser = async () => {
         try {
             const response = await axios.get(ENDPOINTS.GET_USER, { withCredentials: true });
@@ -28,7 +22,6 @@ export const Profile = () => {
             }
         } catch (error) {
             console.error("Failed to fetch profile", error);
-            // Fallback or redirect to login? For now just log.
         } finally {
             setLoading(false);
         }
@@ -46,34 +39,90 @@ export const Profile = () => {
   }
 
   return (
-    <Layout style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-      <Header style={{ background: '#fff', padding: '0 20px', display: 'flex', alignItems: 'center', boxShadow: '0 2px 8px #f0f1f2' }}>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')} type="text">
-          Back to Dashboard
-        </Button>
-      </Header>
-      <Content style={{ padding: '50px', display: 'flex', justifyContent: 'center' }}>
-        <Card
-          style={{ width: 400, borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-          cover={
-            <div style={{ height: 150, background: 'linear-gradient(to right, #ff7e5f, #feb47b)', borderRadius: '10px 10px 0 0' }} />
-          }
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-50px' }}>
-            <Avatar
-              size={100}
-              src={user?.picture}
-              icon={<UserOutlined />}
-              style={{ border: '4px solid #fff', backgroundColor: '#87d068' }}
-            />
-            <Title level={3} style={{ marginTop: 10, marginBottom: 5 }}>{user?.name}</Title>
-            <Text type="secondary">{user?.email}</Text>
-            
-            <div style={{ width: '100%', marginTop: 20 }}>
-                 {/* Additional profile details can go here */}
+    <Layout className="dashboard-layout">
+        <Header className="dashboard-header">
+            <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
+                <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')} type="text" style={{ marginRight: '10px' }}/>
+                <span style={{ fontSize: '24px', marginRight: '10px' }}>👨‍🍳</span>
+                <Title level={4} className="brand-title" style={{ margin: 0 }}>SnapCook Profile</Title>
             </div>
-          </div>
-        </Card>
+        </Header>
+
+      <Content style={{ padding: '60px 20px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+        
+        <div className="glass-card" style={{ maxWidth: '600px', width: '100%', padding: '0', overflow: 'hidden' }}>
+            <div style={{ 
+                height: '180px', 
+                background: 'linear-gradient(135deg, #ff7e5f, #feb47b)',
+                position: 'relative'
+            }}>
+                <div style={{
+                    position: 'absolute',
+                    bottom: '-60px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    padding: '5px',
+                    background: 'rgba(255,255,255,0.3)',
+                    borderRadius: '50%',
+                    backdropFilter: 'blur(5px)'
+                }}>
+                    <Avatar
+                        size={120}
+                        src={user?.picture}
+                        icon={<UserOutlined />}
+                        style={{ border: '4px solid #fff', backgroundColor: '#87d068' }}
+                    />
+                </div>
+            </div>
+
+            <div style={{ marginTop: '70px', padding: '0 30px 40px', textAlign: 'center' }}>
+                <Title level={2} style={{ marginBottom: '5px', fontFamily: 'serif' }}>{user?.name || 'Chef'}</Title>
+                <Text type="secondary" style={{ fontSize: '1.1rem' }}>{user?.email}</Text>
+
+                <div style={{ marginTop: '30px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '30px' }}>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Statistic title="Recipes Cooked" value={user?.cookedRecipes?.length || 0} prefix={<FireOutlined style={{ color: '#ff7e5f' }}/>} />
+                        </Col>
+                    </Row>
+                </div>
+                
+                {user?.cookedRecipes?.length > 0 && (
+                     <div style={{ marginTop: '30px', textAlign: 'left' }}>
+                        <Title level={4} style={{ fontFamily: 'serif', marginBottom: '15px' }}>Cooked History</Title>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px' }}>
+                            {user.cookedRecipes.map((recipe, index) => (
+                                <div key={index} style={{ cursor: 'pointer' }} onClick={() => navigate(`/recipe/${recipe._id}`)}>
+                                    <div style={{ 
+                                        height: '80px', 
+                                        borderRadius: '8px', 
+                                        backgroundImage: `url(${recipe.image})`, 
+                                        backgroundSize: 'cover', 
+                                        backgroundPosition: 'center',
+                                        marginBottom: '5px'
+                                    }}/>
+                                    <Text ellipsis style={{ fontSize: '0.9rem', width: '100%', display: 'block' }}>{recipe.title}</Text>
+                                </div>
+                            ))}
+                        </div>
+                     </div>
+                )}
+
+                <div style={{ marginTop: '40px' }}>
+                    <Button type="primary" size="large" onClick={() => message.info("Feature coming soon!")} style={{ 
+                        background: 'linear-gradient(to right, #ff7e5f, #feb47b)', 
+                        border: 'none',
+                        padding: '0 40px',
+                        height: '45px',
+                        fontSize: '1rem',
+                        boxShadow: '0 4px 15px rgba(255, 126, 95, 0.4)'
+                    }}>
+                        Edit Profile
+                    </Button>
+                </div>
+            </div>
+        </div>
+
       </Content>
     </Layout>
   );

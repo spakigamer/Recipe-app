@@ -4,7 +4,6 @@
     import { GoogleOutlined } from '@ant-design/icons';
     import { useNavigate } from 'react-router-dom';
     import axios from 'axios';
-    import cookies from 'js-cookie';
     import { showSuccess, showError } from '../utils/helpers';
     import { ENDPOINTS } from '../utils/endpoints';
 

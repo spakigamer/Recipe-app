@@ -1,8 +1,7 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Layout, Typography, Spin, Divider, Tag, Button, List, Avatar, message } from 'antd';
-import { ArrowLeftOutlined, ClockCircleOutlined, TeamOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { Layout, Typography, Spin, Divider, Tag, Button, List, Avatar, message, Checkbox, Row, Col } from 'antd';
+import { ArrowLeftOutlined, ClockCircleOutlined, TeamOutlined, ExperimentOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { ENDPOINTS } from '../utils/endpoints';
 
@@ -53,95 +52,152 @@ export const RecipeDetails = () => {
     }
 
     return (
-        <Layout style={{ minHeight: '100vh', backgroundColor: '#F9F7F5' }}>
-            <Header style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                backgroundColor: '#fff', 
-                padding: '0 40px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                height: '64px'
-            }}>
-                <Button 
-                    type="text" 
-                    icon={<ArrowLeftOutlined />} 
-                    onClick={() => navigate('/dashboard')}
-                    style={{ fontSize: '16px', marginRight: '20px' }}
-                >
-                    Back
-                </Button>
-                <Title level={4} style={{ margin: 0, fontFamily: 'serif', color: '#4a4a4a' }}>SnapCook</Title>
+        <Layout className="dashboard-layout">
+            <Header className="dashboard-header">
+                <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
+                    <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/dashboard')} type="text" style={{ marginRight: '10px' }}/>
+                    <span style={{ fontSize: '24px', marginRight: '10px' }}>👨‍🍳</span>
+                    <Title level={4} className="brand-title" style={{ margin: 0 }}>SnapCook</Title>
+                </div>
             </Header>
 
-            <Content style={{ padding: '24px 50px', display: 'flex', justifyContent: 'center' }}>
-                <div style={{ maxWidth: '800px', width: '100%', background: '#fff', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+            <Content style={{ padding: '40px 20px', display: 'flex', justifyContent: 'center' }}>
+                <div className="glass-card" style={{ maxWidth: '1000px', width: '100%', padding: '0', overflow: 'hidden' }}>
                     
-                    <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                        <Title level={1} style={{ fontFamily: 'serif', color: '#2c2c2c', marginBottom: '10px' }}>
-                            {recipe.title}
-                        </Title>
-                        {recipe.description && (
-                            <Paragraph type="secondary" style={{ fontSize: '1.1rem' }}>
-                                {recipe.description}
-                            </Paragraph>
+                    {/* Hero Image Section */}
+                    <div style={{ position: 'relative', height: '400px', backgroundColor: '#f0f0f0' }}>
+                        {recipe.image ? (
+                            <img 
+                                src={recipe.image} 
+                                alt={recipe.title} 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                            />
+                        ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '4rem' }}>
+                                🍳
+                            </div>
                         )}
-                        
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
-                            {recipe.prepTime && (
-                                <Tag icon={<ClockCircleOutlined />} color="blue">Prep: {recipe.prepTime} min</Tag>
-                            )}
-                            {recipe.cookTime && (
-                                <Tag icon={<ClockCircleOutlined />} color="cyan">Cook: {recipe.cookTime} min</Tag>
-                            )}
-                             {recipe.servings && (
-                                <Tag icon={<TeamOutlined />} color="green">{recipe.servings} Servings</Tag>
-                            )}
-                             {recipe.difficulty && (
-                                <Tag icon={<ExperimentOutlined />} color={
-                                    recipe.difficulty === 'easy' ? 'green' : 
-                                    recipe.difficulty === 'medium' ? 'orange' : 'red'
-                                } style={{ textTransform: 'capitalize' }}>
-                                    {recipe.difficulty}
-                                </Tag>
-                            )}
+                        <div style={{ 
+                            position: 'absolute', 
+                            bottom: 0, 
+                            left: 0, 
+                            right: 0, 
+                            background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+                            padding: '40px 30px 20px',
+                            color: '#fff'
+                        }}>
+                             <Title level={1} style={{ color: '#fff', margin: 0, textShadow: '0 2px 4px rgba(0,0,0,0.5)', fontFamily: 'serif' }}>
+                                {recipe.title}
+                            </Title>
                         </div>
                     </div>
 
-                    <Divider />
+                    <div style={{ padding: '40px' }}>
+                        {/* Meta and Description */}
+                        <div style={{ marginBottom: '40px' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '20px' }}>
+                                {recipe.prepTime && <Tag icon={<ClockCircleOutlined />} color="blue" style={{ fontSize: '1rem', padding: '5px 10px' }}>Prep: {recipe.prepTime}m</Tag>}
+                                {recipe.cookTime && <Tag icon={<ClockCircleOutlined />} color="cyan" style={{ fontSize: '1rem', padding: '5px 10px' }}>Cook: {recipe.cookTime}m</Tag>}
+                                {recipe.servings && <Tag icon={<TeamOutlined />} color="green" style={{ fontSize: '1rem', padding: '5px 10px' }}>{recipe.servings} Servings</Tag>}
+                                {recipe.difficulty && (
+                                    <Tag icon={<ExperimentOutlined />} color={
+                                        recipe.difficulty === 'easy' ? 'green' : 
+                                        recipe.difficulty === 'medium' ? 'orange' : 'red'
+                                    } style={{ textTransform: 'capitalize', fontSize: '1rem', padding: '5px 10px' }}>
+                                        {recipe.difficulty}
+                                    </Tag>
+                                )}
+                            </div>
+                            
+                            {recipe.description && (
+                                <Paragraph style={{ fontSize: '1.2rem', color: '#555', lineHeight: '1.8' }}>
+                                    {recipe.description}
+                                </Paragraph>
+                            )}
+                        </div>
 
-                    <div style={{ marginBottom: '30px' }}>
-                        <Title level={3} style={{ fontFamily: 'serif' }}>Ingredients</Title>
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={recipe.ingredients}
-                            renderItem={item => (
-                                <List.Item>
-                                    <List.Item.Meta
-                                        avatar={<Avatar style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}>{item.ingredient.name[0].toUpperCase()}</Avatar>}
-                                        title={<span style={{ textTransform: 'capitalize' }}>{item.ingredient.name}</span>}
-                                        description={`${item.quantity} ${item.unit || ''} ${item.optional ? '(Optional)' : ''}`}
+                        <Divider style={{ margin: '30px 0' }}/>
+
+                        <Row gutter={[40, 40]}>
+                            {/* Ingredients Column */}
+                            <Col xs={24} md={9}>
+                                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '25px', borderRadius: '12px' }}>
+                                    <Title level={3} style={{ fontFamily: 'serif', marginBottom: '20px', color: '#d45d3a' }}>Ingredients</Title>
+                                    <List
+                                        itemLayout="horizontal"
+                                        dataSource={recipe.ingredients}
+                                        renderItem={item => (
+                                            <List.Item style={{ border: 'none', padding: '10px 0' }}>
+                                                <Checkbox style={{ width: '100%', fontSize: '1rem' }}>
+                                                    <span style={{ fontWeight: 600 }}>{item.quantity} {item.unit}</span> 
+                                                    <span style={{ marginLeft: '5px', textTransform: 'capitalize' }}>{item.ingredient?.name || 'Unknown Ingredient'}</span>
+                                                    {item.optional && <span style={{ color: '#888', fontStyle: 'italic', marginLeft: '5px' }}>(Optional)</span>}
+                                                </Checkbox>
+                                            </List.Item>
+                                        )}
                                     />
-                                </List.Item>
-                            )}
-                        />
+                                </div>
+                            </Col>
+
+                            {/* Instructions Column */}
+                            <Col xs={24} md={15}>
+                                <div>
+                                    <Title level={3} style={{ fontFamily: 'serif', marginBottom: '20px', color: '#d45d3a' }}>Instructions</Title>
+                                    <List
+                                        size="large"
+                                        dataSource={recipe.instructions}
+                                        renderItem={(item, index) => (
+                                            <List.Item style={{ alignItems: 'flex-start', border: 'none', paddingBottom: '25px' }}>
+                                                 <div style={{ 
+                                                     minWidth: '30px', 
+                                                     height: '30px', 
+                                                     background: '#ff7e5f', 
+                                                     color: '#fff', 
+                                                     borderRadius: '50%', 
+                                                     display: 'flex', 
+                                                     alignItems: 'center', 
+                                                     justifyContent: 'center',
+                                                     fontWeight: 'bold',
+                                                     marginRight: '20px',
+                                                     marginTop: '3px'
+                                                 }}>
+                                                     {index + 1}
+                                                 </div>
+                                                 <Text style={{ fontSize: '1.1rem', lineHeight: '1.6', color: '#333' }}>{item}</Text>
+                                            </List.Item>
+                                        )}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                        
+                        <div style={{ marginTop: '50px', display: 'flex', justifyContent: 'center' }}>
+                           <Button type="primary" size="large" icon={<CheckCircleOutlined />} style={{ 
+                               background: 'linear-gradient(to right, #52c41a, #87d068)', 
+                               border: 'none',
+                               height: '50px',
+                               padding: '0 40px',
+                               fontSize: '1.1rem',
+                               borderRadius: '25px',
+                               boxShadow: '0 4px 15px rgba(82, 196, 26, 0.4)'
+                           }} onClick={async () => {
+                               try {
+                                   const response = await axios.post(ENDPOINTS.MARK_RECIPE_COOKED, { recipeId: recipe._id || recipe.recipeId || id }, { withCredentials: true });
+                                   if (response.data.success) {
+                                       message.success("Recipe marked as cooked!");
+                                   } else {
+                                       message.info(response.data.message);
+                                   }
+                               } catch (error) {
+                                   console.error("Failed to mark as cooked", error);
+                                   message.error("Failed to mark recipe as cooked");
+                               }
+                           }}>
+                               Mark as Cooked
+                           </Button>
+                        </div>
+
                     </div>
-
-                    <Divider />
-
-                    <div>
-                        <Title level={3} style={{ fontFamily: 'serif' }}>Instructions</Title>
-                        <List
-                            size="large"
-                            dataSource={recipe.instructions}
-                            renderItem={(item, index) => (
-                                <List.Item style={{ alignItems: 'flex-start' }}>
-                                     <Text strong style={{ marginRight: '15px', color: '#fa8c16' }}>{index + 1}.</Text>
-                                     <Text>{item}</Text>
-                                </List.Item>
-                            )}
-                        />
-                    </div>
-
                 </div>
             </Content>
         </Layout>
