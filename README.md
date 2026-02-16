@@ -1,3 +1,5 @@
+![Uploading Screenshot 2026-02-16 221542.png…]()
+
 # SnapCook 🍳
 
 SnapCook is a modern, AI-powered recipe management application that helps users discover new dishes, manage their cooking history, and find recipes based on the ingredients they have.
