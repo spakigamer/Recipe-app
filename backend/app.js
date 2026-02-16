@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    origin: ["http://localhost:5173", "http://localhost:5174","https://recipe-app-8ssc-7gcfawhq2-dhruvgoel335-gmailcoms-projects.vercel.app"]
+    origin: ["http://localhost:5173", "http://localhost:5174","https://recipe-app-8ssc-7gcfawhq2-dhruvgoel335-gmailcoms-projects.vercel.app","https://recipe-app-8ssc.vercel.app"]
 }));
 app.use(cookieParser());
 app.use(express.json());
