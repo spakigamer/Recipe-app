@@ -1,5 +1,3 @@
-
-
 # SnapCook 🍳
 
 SnapCook is a modern, AI-powered recipe management application that helps users discover new dishes, manage their cooking history, and find recipes based on the ingredients they have.
@@ -122,6 +120,17 @@ snapcook/
     │   ├── pages/      # Application Pages
     │   └── utils/      # API Endpoints
 ```
+
+## ⚠️ Important Note
+
+### Third-Party Cookies
+
+This application uses cross-site cookies for secure authentication (especially for Google Login and maintaining sessions between the frontend and backend hosted on different domains).
+
+**Please ensure that "Third-Party Cookies" are allowed in your browser settings for this application to work correctly.**
+
+- **Chrome**: Settings > Privacy and security > Third-party cookies > Allow third-party cookies
+- **Safari**: Preferences > Privacy > Uncheck "Prevent cross-site tracking"
 
 ## 🤝 Contributing
 
