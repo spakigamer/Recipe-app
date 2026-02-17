@@ -1,7 +1,7 @@
     import React from 'react';
     import { Card, Typography, Button } from 'antd';
     import { useGoogleLogin } from '@react-oauth/google';
-    import { GoogleOutlined } from '@ant-design/icons';
+    import { GoogleOutlined, InfoCircleOutlined } from '@ant-design/icons';
     import { useNavigate } from 'react-router-dom';
     import axios from 'axios';
     import { showSuccess, showError } from '../utils/helpers';
@@ -87,6 +87,13 @@
                 >
                     Sign in with Google
                 </Button>
+
+                <div style={{ marginTop: '24px', textAlign: 'center', padding: '0 10px' }}>
+                    <Text type="secondary" style={{ fontSize: '13px', display: 'block', lineHeight: '1.5' }}>
+                        <InfoCircleOutlined style={{ marginRight: '5px', color: '#1890ff' }} />
+                        Note: Please enable third-party cookies in your browser settings for a smoother login experience.
+                    </Text>
+                </div>
             </Card>
         </div>
     );
