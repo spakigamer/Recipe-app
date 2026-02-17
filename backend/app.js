@@ -20,6 +20,10 @@ app.use(express.json());
 
 mongoConnection();
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/recipe", recipeRoutes);
 
