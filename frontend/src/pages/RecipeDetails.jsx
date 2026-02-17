@@ -86,7 +86,7 @@ export const RecipeDetails = () => {
                             padding: '40px 30px 20px',
                             color: '#fff'
                         }}>
-                             <Title level={1} style={{ color: '#fff', margin: 0, textShadow: '0 2px 4px rgba(0,0,0,0.5)', fontFamily: 'serif' }}>
+                             <Title level={1} style={{ color: '#fff', margin: 0, textShadow: '0 2px 4px rgba(0,0,0,0.5)', fontWeight: 700 }}>
                                 {recipe.title}
                             </Title>
                         </div>
@@ -122,7 +122,7 @@ export const RecipeDetails = () => {
                             {/* Ingredients Column */}
                             <Col xs={24} md={9}>
                                 <div style={{ background: 'rgba(255,255,255,0.5)', padding: '25px', borderRadius: '12px' }}>
-                                    <Title level={3} style={{ fontFamily: 'serif', marginBottom: '20px', color: '#d45d3a' }}>Ingredients</Title>
+                                    <Title level={3} style={{ fontWeight: 600, marginBottom: '20px', color: '#ff7e5f' }}>Ingredients</Title>
                                     <List
                                         itemLayout="horizontal"
                                         dataSource={recipe.ingredients}
@@ -142,7 +142,7 @@ export const RecipeDetails = () => {
                             {/* Instructions Column */}
                             <Col xs={24} md={15}>
                                 <div>
-                                    <Title level={3} style={{ fontFamily: 'serif', marginBottom: '20px', color: '#d45d3a' }}>Instructions</Title>
+                                    <Title level={3} style={{ fontWeight: 600, marginBottom: '20px', color: '#ff7e5f' }}>Instructions</Title>
                                     <List
                                         size="large"
                                         dataSource={recipe.instructions}

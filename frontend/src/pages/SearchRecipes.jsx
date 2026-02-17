@@ -65,12 +65,12 @@ export const SearchRecipes = () => {
         >
           Back
         </Button>
-        <Title level={4} style={{ margin: 0, fontFamily: 'serif', color: '#4a4a4a' }}>Search Recipes</Title>
+        <Title level={4} style={{ margin: 0, fontWeight: 600, color: '#4a4a4a' }}>Search Recipes</Title>
       </Header>
 
       <Content style={{ padding: '40px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{ maxWidth: '600px', width: '100%', marginBottom: '40px' }}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'serif' }}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '20px', fontWeight: 700 }}>
             Find your next meal
           </Title>
           <Input.Search

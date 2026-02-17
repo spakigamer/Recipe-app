@@ -76,7 +76,7 @@ export const Profile = () => {
             </div>
 
             <div style={{ marginTop: '70px', padding: '0 30px 40px', textAlign: 'center' }}>
-                <Title level={2} style={{ marginBottom: '5px', fontFamily: 'serif' }}>{user?.name || 'Chef'}</Title>
+                <Title level={2} style={{ marginBottom: '5px', fontWeight: 700 }}>{user?.name || 'Chef'}</Title>
                 <Text type="secondary" style={{ fontSize: '1.1rem' }}>{user?.email}</Text>
 
                 <div style={{ marginTop: '30px', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '30px' }}>
@@ -89,7 +89,7 @@ export const Profile = () => {
                 
                 {user?.cookedRecipes?.length > 0 && (
                      <div style={{ marginTop: '30px', textAlign: 'left' }}>
-                        <Title level={4} style={{ fontFamily: 'serif', marginBottom: '15px' }}>Cooked History</Title>
+                        <Title level={4} style={{ fontWeight: 600, marginBottom: '15px' }}>Cooked History</Title>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px' }}>
                             {user.cookedRecipes.map((recipe, index) => (
                                 <div key={index} style={{ cursor: 'pointer' }} onClick={() => navigate(`/recipe/${recipe._id}`)}>

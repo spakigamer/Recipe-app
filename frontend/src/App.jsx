@@ -1,7 +1,6 @@
 
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
 import Loader from './components/Loader';
 import AxiosInterceptor from './components/AxiosInterceptor';
 

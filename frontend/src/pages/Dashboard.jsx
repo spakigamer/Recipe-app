@@ -127,13 +127,16 @@ export const Dashboard = () => {
         flexDirection: 'column', 
         alignItems: 'center', 
         padding: '60px 20px',
-        flex: 1
+        flex: 1,
+        maxWidth: '1200px',
+        margin: '0 auto',
+        width: '100%'
       }}>
          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-             <h1 className="hero-title">
+             <h1 style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '20px', color: '#1f1f1f' }}>
                  What's in your kitchen?
              </h1>
-             <Text type="secondary" style={{ fontSize: '1.3rem', color: '#666', maxWidth: '600px', display: 'block', margin: '0 auto' }}>
+             <Text type="secondary" style={{ fontSize: '1.2rem', color: '#666', maxWidth: '600px', display: 'block', margin: '0 auto', lineHeight: '1.6' }}>
                  Snap a photo of your ingredients and we'll suggest
                  delicious recipes you can make right now.
              </Text>
