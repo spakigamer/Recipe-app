@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Loader from './components/Loader';
+import AxiosInterceptor from './components/AxiosInterceptor';
 
 const Login = lazy(() => import('./pages/Login'));
 const RecipeDetails = lazy(() => import('./pages/RecipeDetails').then(module => ({ default: module.RecipeDetails })));
@@ -15,16 +16,18 @@ const Protect = lazy(() => import('./pages/Protect').then(module => ({ default: 
 function App() {
   return (
     <Router>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Protect><Dashboard /></Protect>} />
-          <Route path="/profile" element={<Protect><Profile /></Protect>} />
-          <Route path="/search" element={<Protect><SearchRecipes /></Protect>} />
-          <Route path="/recipe/:id" element={<Protect><RecipeDetails /></Protect>} />
-        </Routes>
-      </Suspense>
+      <AxiosInterceptor>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Protect><Dashboard /></Protect>} />
+            <Route path="/profile" element={<Protect><Profile /></Protect>} />
+            <Route path="/search" element={<Protect><SearchRecipes /></Protect>} />
+            <Route path="/recipe/:id" element={<Protect><RecipeDetails /></Protect>} />
+          </Routes>
+        </Suspense>
+      </AxiosInterceptor>
     </Router>
   )
 }
